@@ -1,322 +1,398 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GradeFlow - Text-based Grades Calculator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        /* Your existing styles remain unchanged */
-        :root {
-            --primary: #6366f1;
-            --primary-hover: #4f46e5;
-            --background: #f8fafc;
-            --card-bg: rgba(255, 255, 255, 0.9);
-            --text: #1e293b;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GradeFlow - Text-based Grades Calculator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --background: #f8fafc;
+      --card-bg: rgba(255, 255, 255, 0.9);
+      --text: #1e293b;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-            min-height: 100vh;
-            padding: 1rem;
-            color: var(--text);
-        }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      min-height: 100vh;
+      padding: 1rem;
+      color: var(--text);
+    }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            width: 100%;
-        }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      width: 100%;
+    }
 
-        h1 {
-            text-align: center;
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 2rem;
-            font-size: clamp(1.5rem, 5vw, 2.5rem);
-            letter-spacing: -0.5px;
-        }
+    h1 {
+      text-align: center;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 2rem;
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      letter-spacing: -0.5px;
+    }
 
-        .upload-section {
-            background: var(--card-bg);
-            border-radius: 1rem;
-            padding: 2rem;
-            text-align: center;
-            margin-bottom: 2rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
+    .upload-section {
+      background: var(--card-bg);
+      border-radius: 1rem;
+      padding: 2rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
 
-        .upload-section.hidden {
-            display: none;
-        }
+    .upload-section.hidden {
+      display: none;
+    }
 
-        .glass-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 1rem;
-            padding: 1.25rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            width: 100%;
-        }
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: 1rem;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      width: 100%;
+    }
 
-        .module {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 1rem;
-            align-items: start;
-        }
+    .module {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      align-items: start;
+      animation: slideIn 0.3s ease forwards;
+    }
 
-        @media (max-width: 640px) {
-            .module {
-                grid-template-columns: 1fr;
-            }
-        }
+    @media (max-width: 640px) {
+      .module {
+        grid-template-columns: 1fr;
+      }
+    }
 
-        .module-name {
-            font-weight: 500;
-            color: var(--text);
-            font-size: 1rem;
-        }
+    .module-name {
+      font-weight: 500;
+      color: var(--text);
+      font-size: 1rem;
+    }
 
-        .coefficient {
-            color: #6b7280;
-            font-size: 0.9rem;
-            margin-top: 0.25rem;
-        }
+    .coefficient {
+      color: #6b7280;
+      font-size: 0.9rem;
+      margin-top: 0.25rem;
+    }
 
-        .module-controls {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            align-items: center;
-        }
+    .module-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+    }
 
-        .toggle-group {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: #f1f5f9;
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-        }
+    .toggle-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #f1f5f9;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+    }
 
-        textarea {
-            width: 100%;
-            min-height: 200px;
-            padding: 1rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 0.5rem;
-            font-family: inherit;
-            margin: 1rem 0;
-            resize: vertical;
-        }
+    textarea {
+      width: 100%;
+      min-height: 200px;
+      padding: 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 0.5rem;
+      font-family: inherit;
+      margin: 1rem 0;
+      resize: vertical;
+    }
 
-        input[type="number"] {
-            padding: 0.8rem 1rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 0.5rem;
-            font-family: inherit;
-            width: 120px;
-            font-size: 0.9rem;
-        }
+    input[type="number"] {
+      padding: 0.8rem 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 0.5rem;
+      font-family: inherit;
+      width: 120px;
+      font-size: 0.9rem;
+    }
 
-        .gradient-btn {
-            background: linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%);
-            color: white;
-            padding: 0.8rem 1.5rem;
-            border: none;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin: 2rem auto;
-        }
+    .gradient-btn {
+      background: linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 2rem auto;
+    }
 
-        #results {
-            background: linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%);
-            color: white;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin-top: 2rem;
-            display: none;
-        }
+    #results {
+      background: linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%);
+      color: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      display: none;
+    }
 
-        .module-result {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 1rem;
-            border-radius: 0.5rem;
-            margin-bottom: 1rem;
-        }
+    .module-result {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+    }
 
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
 
-        .input-label {
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
+    .input-label {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .module {
-            animation: slideIn 0.3s ease forwards;
-        }
-    </style>
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🎓 GradeFlow Calculator</h1>
-        
-        <div class="upload-section" id="uploadSection">
-            <h2>Enter Module List</h2>
-            <p>Enter your modules in the format: Module Name - Coefficient</p>
-            <p>Example:<br>Mathematics - 2<br>Physics - 3</p>
-            <textarea id="moduleInput" placeholder="Enter your modules here, one per line..."></textarea>
-            <button id="processModules" class="gradient-btn">Process Modules</button>
-        </div>
-        
-        <div id="modules-container"></div>
-        
-        <button class="gradient-btn" id="calculate" style="display: none;">
-            📊 Calculate Average
-        </button>
+  <div class="container">
+    <h1>🎓 GradeFlow Calculator</h1>
 
-        <div id="results"></div>
+    <div class="upload-section" id="uploadSection">
+      <h2>Enter Module List</h2>
+      <p>Enter your modules in the format: Module Name - Coefficient</p>
+      <p>Example:<br>Mathematics - 2<br>Physics - 3</p>
+      <textarea id="moduleInput" placeholder="Enter your modules here, one per line..."></textarea>
+      <button id="processModules" class="gradient-btn">Process Modules</button>
     </div>
 
-    <script>
-        function parseModuleInput(input) {
-            const lines = input.trim().split('\n');
-            return lines.map(line => {
-                const [name, coef] = line.split('-').map(str => str.trim());
-                return {
-                    name: name,
-                    coef: parseInt(coef) || 1
-                };
-            }).filter(module => module.name);
-        }
+    <div id="modules-container"></div>
 
-        function createModuleCard(module) {
-            const moduleDiv = document.createElement('div');
-            moduleDiv.className = 'glass-card module';
-            
-            moduleDiv.innerHTML = `
-                <div>
-                    <div class="module-name">${module.name}</div>
-                    <div class="coefficient">Coefficient: ${module.coef}</div>
-                </div>
-                <div class="module-controls">
-                    <div class="toggle-group">
-                        <label>📖 Has TD</label>
-                        <input type="checkbox" class="has-td">
-                    </div>
-                    <div class="input-group">
-                        <label class="input-label">Exam Grade</label>
-                        <input type="number" step="0.01" min="0" max="20" class="exam-grade">
-                    </div>
-                    <div class="input-group td-group" style="display: none;">
-                        <label class="input-label">TD Grade</label>
-                        <input type="number" step="0.01" min="0" max="20" class="td-grade" disabled>
-                    </div>
-                </div>
-            `;
+    <button class="gradient-btn" id="calculate" style="display: none;">
+      📊 Calculate Average
+    </button>
 
-            const tdToggle = moduleDiv.querySelector('.has-td');
-            const tdGroup = moduleDiv.querySelector('.td-group');
-            const tdInput = moduleDiv.querySelector('.td-grade');
+    <button class="gradient-btn" id="deleteModules" style="display: none;">
+      🗑️ Delete All Modules
+    </button>
 
-            tdToggle.addEventListener('change', () => {
-                tdInput.disabled = !tdToggle.checked;
-                tdGroup.style.display = tdToggle.checked ? 'block' : 'none';
-            });
+    <div id="results"></div>
+  </div>
 
-            return moduleDiv;
-        }
+  <script>
+    function parseModuleInput(input) {
+      const lines = input.trim().split('\n');
+      return lines.map(line => {
+        const [name, coef] = line.split('-').map(str => str.trim());
+        return {
+          name: name,
+          coef: parseInt(coef) || 1
+        };
+      }).filter(module => module.name);
+    }
 
-        document.getElementById('processModules').addEventListener('click', function() {
-            const moduleInput = document.getElementById('moduleInput').value;
-            const moduleData = parseModuleInput(moduleInput);
-            
-            if (moduleData.length === 0) {
-                alert('Please enter at least one module');
-                return;
-            }
+    function saveGradesState() {
+      const states = [];
+      document.querySelectorAll('.module').forEach(mod => {
+        const name = mod.querySelector('.module-name').textContent;
+        const exam = mod.querySelector('.exam-grade').value || '';
+        const hasTD = mod.querySelector('.has-td').checked;
+        const td = mod.querySelector('.td-grade').value || '';
+        states.push({ name, exam, hasTD, td });
+      });
+      localStorage.setItem('moduleStates', JSON.stringify(states));
+    }
 
-            document.getElementById('uploadSection').classList.add('hidden');
-            
-            const container = document.getElementById('modules-container');
-            container.innerHTML = ''; // Clear existing modules
-            
-            moduleData.forEach(module => {
-                container.appendChild(createModuleCard(module));
-            });
-            
-            document.getElementById('calculate').style.display = 'block';
+    function restoreGradesState() {
+      const savedStates = JSON.parse(localStorage.getItem('moduleStates') || '[]');
+      savedStates.forEach((state, index) => {
+        const moduleDiv = document.querySelectorAll('.module')[index];
+        if (!moduleDiv) return;
+
+        const examInput = moduleDiv.querySelector('.exam-grade');
+        const hasTDCheck = moduleDiv.querySelector('.has-td');
+        const tdGroup = moduleDiv.querySelector('.td-group');
+        const tdInput = moduleDiv.querySelector('.td-grade');
+
+        examInput.value = state.exam;
+        hasTDCheck.checked = state.hasTD;
+        tdInput.disabled = !state.hasTD;
+        tdGroup.style.display = state.hasTD ? 'block' : 'none';
+        tdInput.value = state.td;
+      });
+    }
+
+    function createModuleCard(module) {
+      const moduleDiv = document.createElement('div');
+      moduleDiv.className = 'glass-card module';
+
+      moduleDiv.innerHTML = `
+        <div>
+          <div class="module-name">${module.name}</div>
+          <div class="coefficient">Coefficient: ${module.coef}</div>
+        </div>
+        <div class="module-controls">
+          <div class="toggle-group">
+            <label>📖 Has TD</label>
+            <input type="checkbox" class="has-td">
+          </div>
+          <div class="input-group">
+            <label class="input-label">Exam Grade</label>
+            <input type="number" step="0.01" min="0" max="20" class="exam-grade">
+          </div>
+          <div class="input-group td-group" style="display: none;">
+            <label class="input-label">TD Grade</label>
+            <input type="number" step="0.01" min="0" max="20" class="td-grade" disabled>
+          </div>
+        </div>
+      `;
+
+      moduleDiv.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', saveGradesState);
+        input.addEventListener('change', saveGradesState);
+      });
+
+      const tdToggle = moduleDiv.querySelector('.has-td');
+      const tdGroup = moduleDiv.querySelector('.td-group');
+      const tdInput = moduleDiv.querySelector('.td-grade');
+
+      tdToggle.addEventListener('change', () => {
+        tdInput.disabled = !tdToggle.checked;
+        tdGroup.style.display = tdToggle.checked ? 'block' : 'none';
+      });
+
+      return moduleDiv;
+    }
+
+    function loadModulesFromStorage() {
+      const saved = localStorage.getItem('savedModules');
+      if (!saved) return;
+
+      try {
+        const moduleData = JSON.parse(saved);
+        if (!Array.isArray(moduleData)) return;
+
+        document.getElementById('uploadSection').classList.add('hidden');
+
+        const container = document.getElementById('modules-container');
+        container.innerHTML = '';
+        moduleData.forEach(module => {
+          container.appendChild(createModuleCard(module));
         });
 
-        document.getElementById('calculate').addEventListener('click', function() {
-            const modules = document.querySelectorAll('.module');
-            const results = document.getElementById('results');
-            let totalWeightedGrade = 0;
-            let totalCoefficients = 0;
-            let resultsHTML = '<h2>Results</h2>';
+        document.getElementById('calculate').style.display = 'block';
+        document.getElementById('deleteModules').style.display = 'block';
 
-            modules.forEach((moduleDiv, index) => {
-                const name = moduleDiv.querySelector('.module-name').textContent;
-                const coef = parseInt(moduleDiv.querySelector('.coefficient').textContent.split(': ')[1]);
-                const examGrade = parseFloat(moduleDiv.querySelector('.exam-grade').value) || 0;
-                const hasTD = moduleDiv.querySelector('.has-td').checked;
-                const tdGrade = hasTD ? parseFloat(moduleDiv.querySelector('.td-grade').value) || 0 : 0;
+        restoreGradesState();
+      } catch (e) {
+        console.error("Failed to parse saved modules:", e);
+      }
+    }
 
-                const moduleGrade = hasTD ? (examGrade * 0.6 + tdGrade * 0.4) : examGrade;
-                const weightedGrade = moduleGrade * coef;
+    document.getElementById('processModules').addEventListener('click', function () {
+      const moduleInput = document.getElementById('moduleInput').value;
+      const moduleData = parseModuleInput(moduleInput);
 
-                totalWeightedGrade += weightedGrade;
-                totalCoefficients += coef;
+      if (moduleData.length === 0) {
+        alert('Please enter at least one module');
+        return;
+      }
 
-                resultsHTML += `
-                    <div class="module-result">
-                        <h3>${name}</h3>
-                        <p>Final Grade: ${moduleGrade.toFixed(2)}/20 (Coefficient: ${coef})</p>
-                    </div>
-                `;
-            });
+      alert('ℹ️ To delete or modify modules, please click the "🗑️ Delete All Modules" button below.');
 
-            const finalAverage = totalWeightedGrade / totalCoefficients;
-            resultsHTML += `
-                <div class="module-result">
-                    <h3>Final Weighted Average</h3>
-                    <p>${finalAverage.toFixed(2)}/20</p>
-                </div>
-            `;
+      localStorage.setItem('savedModules', JSON.stringify(moduleData));
+      localStorage.removeItem('moduleStates');
 
-            results.innerHTML = resultsHTML;
-            results.style.display = 'block';
-        });
-    </script>
+      document.getElementById('uploadSection').classList.add('hidden');
+
+      const container = document.getElementById('modules-container');
+      container.innerHTML = '';
+      moduleData.forEach(module => {
+        container.appendChild(createModuleCard(module));
+      });
+
+      document.getElementById('calculate').style.display = 'block';
+      document.getElementById('deleteModules').style.display = 'block';
+    });
+
+    document.getElementById('calculate').addEventListener('click', function () {
+      const modules = document.querySelectorAll('.module');
+      const results = document.getElementById('results');
+      let totalWeightedGrade = 0;
+      let totalCoefficients = 0;
+      let resultsHTML = '<h2>Results</h2>';
+
+      modules.forEach((moduleDiv, index) => {
+        const name = moduleDiv.querySelector('.module-name').textContent;
+        const coef = parseInt(moduleDiv.querySelector('.coefficient').textContent.split(': ')[1]);
+        const examGrade = parseFloat(moduleDiv.querySelector('.exam-grade').value) || 0;
+        const hasTD = moduleDiv.querySelector('.has-td').checked;
+        const tdGrade = hasTD ? parseFloat(moduleDiv.querySelector('.td-grade').value) || 0 : 0;
+
+        const moduleGrade = hasTD ? (examGrade * 0.6 + tdGrade * 0.4) : examGrade;
+        const weightedGrade = moduleGrade * coef;
+
+        totalWeightedGrade += weightedGrade;
+        totalCoefficients += coef;
+
+        resultsHTML += `
+          <div class="module-result">
+            <h3>${name}</h3>
+            <p>Final Grade: ${moduleGrade.toFixed(2)}/20 (Coefficient: ${coef})</p>
+          </div>
+        `;
+      });
+
+      const finalAverage = totalWeightedGrade / totalCoefficients;
+      resultsHTML += `
+        <div class="module-result">
+          <h3>Final Weighted Average</h3>
+          <p>${finalAverage.toFixed(2)}/20</p>
+        </div>
+      `;
+
+      results.innerHTML = resultsHTML;
+      results.style.display = 'block';
+    });
+
+    document.getElementById('deleteModules').addEventListener('click', function () {
+      if (confirm("Are you sure you want to delete all modules and grades?")) {
+        localStorage.removeItem('savedModules');
+        localStorage.removeItem('moduleStates');
+        location.reload();
+      }
+    });
+
+    window.addEventListener('load', loadModulesFromStorage);
+  </script>
 </body>
 </html>
